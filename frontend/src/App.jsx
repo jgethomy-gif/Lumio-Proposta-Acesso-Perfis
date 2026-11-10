@@ -1,122 +1,138 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+
+import { useState } from "react";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  ShieldCheck,
+  Bus,
+} from "lucide-react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [aceitouTermos, setAceitouTermos] = useState(false);
+  const [mensagem, setMensagem] = useState("");
+
+  function handleLogin(event) {
+    event.preventDefault();
+
+    if (!email || !senha) {
+      setMensagem("Preencha todos os campos.");
+      return;
+    }
+
+    if (!aceitouTermos) {
+      setMensagem("Você precisa aceitar os Termos de Uso e a LGPD.");
+      return;
+    }
+
+    setMensagem("Interface pronta. A autenticação será conectada ao backend.");
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <main className="lumio-page">
+      <section className="login-container">
+        <div className="login-brand">
+          <div className="brand-icon">
+            <Bus size={30} />
+          </div>
+          <h2>LUMIO</h2>
+          <span>TRANSPORTE ESCOLAR</span>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
+
+        <div className="login-heading">
+          <h1>Bem-vindo ao Lumio!</h1>
+          <p>Acesse sua conta para acompanhar sua jornada.</p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
+
+        <form onSubmit={handleLogin}>
+          <label htmlFor="email">E-mail</label>
+          <div className="input-group">
+            <Mail size={19} />
+            <input
+              id="email"
+              type="email"
+              placeholder="Digite seu e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <label htmlFor="senha">Senha</label>
+          <div className="input-group">
+            <Lock size={19} />
+            <input
+              id="senha"
+              type={mostrarSenha ? "text" : "password"}
+              placeholder="Digite sua senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
+            <button
+              type="button"
+              className="eye-button"
+              onClick={() => setMostrarSenha(!mostrarSenha)}
+              aria-label="Mostrar ou ocultar senha"
+            >
+              {mostrarSenha ? <EyeOff size={19} /> : <Eye size={19} />}
+            </button>
+          </div>
+
+          <div className="forgot-link">
+            <a href="#recuperar">Esqueceu sua senha?</a>
+          </div>
+
+          <label className="terms">
+            <input
+              type="checkbox"
+              checked={aceitouTermos}
+              onChange={(e) => setAceitouTermos(e.target.checked)}
+            />
+            <span>
+              Li e aceito os <a href="#termos">Termos de Uso</a> e a
+              <a href="#lgpd"> Política de Privacidade (LGPD)</a>.
+            </span>
+          </label>
+
+          <button type="submit" className="login-button">
+            Entrar na minha conta
+          </button>
+
+          {mensagem && (
+            <p className="feedback-message" role="status">
+              {mensagem}
+            </p>
+          )}
+        </form>
+
+        <div className="separator">
+          <span>ou continue com</span>
+        </div>
+
+        <button type="button" className="google-button">
+          <strong>G</strong>
+          Continuar com Google
         </button>
-      </section>
 
-      <div className="ticks"></div>
+        <p className="register-link">
+          Ainda não tem uma conta? <a href="#cadastro">Cadastre-se</a>
+        </p>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+        <div className="security-note">
+          <ShieldCheck size={19} />
+          <span>Seus dados são tratados com segurança.</span>
         </div>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <footer>
+        © 2026 Lumio — Plataforma de Transporte Escolar
+      </footer>
+    </main>
+  );
 }
 
-export default App
+export default App;
